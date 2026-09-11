@@ -1,628 +1,1097 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap");
 
 :root {
-  --ink: #211a16;
-  --rust: #b45332;
-  --paper: #faf6f0;
-  --sand: #f2e6d8;
-  --line: #ddcfc0;
+  --ink: #251e19;
+  --rust: #a85b3b;
+  --paper: #f8f3ec;
+  --sand: #f3eade;
+  --line: #e8dccd;
 }
-
 * {
   box-sizing: border-box;
 }
-
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 20px;
 }
-
 body {
   margin: 0;
-  background: var(--paper);
+  background: #fbf8f3;
   color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-
-/* Site Outer Shell */
+button,
+input {
+  font: inherit;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+a {
+  color: inherit;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 5px;
+}
+h1,
+h2,
+p {
+  margin-top: 0;
+}
 .site-shell {
+  container-type: inline-size;
   width: 100%;
-  max-width: none;
+  min-height: 100svh;
   margin: 0;
   background: var(--paper);
-  overflow: hidden;
-  position: relative;
   border: 0;
-  box-shadow: none;
+  position: relative;
+  overflow: clip;
 }
-
-/* Header */
 .header {
-  height: 86px;
-  border-bottom: 1px solid #e7dbcf;
+  background: linear-gradient(
+    180deg,
+    var(--paper) 0%,
+    #f8f3eceb 68%,
+    #f8f3ec00 100%
+  );
+  height: 8cqw;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 42px;
+  padding: 1.25cqw 3.6cqw;
+  gap: 4cqw;
   position: relative;
-  background: var(--paper);
+  z-index: 3;
 }
-
 .nav {
   display: flex;
-  gap: 54px;
-  width: 39%;
   align-items: center;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  gap: 4.5cqw;
+  font-size: 0.79cqw;
+  letter-spacing: 0.075em;
+  font-weight: 600;
 }
-
 .nav a {
-  color: var(--ink);
   text-decoration: none;
   white-space: nowrap;
-  transition: color 0.2s ease;
 }
-
-.nav a:hover {
+.nav button {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  font-weight: inherit;
+}
+.nav a:hover,
+.nav button:hover {
   color: var(--rust);
 }
-
 .nav-right {
-  justify-content: flex-end;
-  gap: 28px;
+  margin-left: auto;
+  gap: 2.7cqw;
 }
-
+.nav-right button:first-child {
+  margin-right: 0.4cqw;
+}
 .logo-link {
-  position: absolute;
-  left: 50%;
-  top: 13px;
-  transform: translateX(-50%);
-  color: var(--ink);
+  order: -1;
+  flex-shrink: 0;
   text-decoration: none;
 }
-
 .logo {
   text-align: center;
-  font: 23px/.84 'Playfair Display', serif;
-  letter-spacing: -1px;
+  font:
+    400 2.15cqw/0.77 "Cormorant Garamond",
+    Georgia,
+    serif;
+  letter-spacing: 0.02em;
 }
-
 .logo span {
-  font-size: 17px;
+  font-size: 1.62cqw;
 }
-
-.icon-button, .bag {
-  border: 0;
-  background: none;
-  color: var(--ink);
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.icon-button:hover, .bag:hover {
-  color: var(--rust);
-}
-
-/* Hero Section */
-.hero {
+.icon-button,
+.bag {
   display: grid;
-  grid-template-columns: 39% 61%;
-  min-height: 423px;
+  place-items: center;
+}
+.icon-search,
+.icon-bag {
+  width: 1.5cqw;
+  height: 1.5cqw;
+  stroke-width: 1.3;
+}
+.hero {
+  height: 29cqw;
+  position: relative;
   border-bottom: 1px solid var(--line);
 }
-
 .hero-copy {
-  padding: 70px 20px 42px 72px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Botanical Illustrations */
-.botanical-bg-left {
-  position: absolute;
-  left: -35px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 105%;
-  width: auto;
-  opacity: 0.11;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.botanical-bg-right {
-  position: absolute;
-  right: -45px;
-  bottom: -25px;
-  height: 65%;
-  width: auto;
-  opacity: 0.08;
-  pointer-events: none;
-  z-index: 1;
-  transform: rotate(45deg);
-}
-
-.eyebrow, .hero h1, .lead {
   position: relative;
   z-index: 2;
+  padding: 0.05cqw 0 0 5.6cqw;
+  width: 49%;
 }
-
 .eyebrow {
+  font-size: 0.88cqw;
+  font-weight: 600;
+  letter-spacing: 0.19em;
   color: var(--rust);
-  font-size: 10px;
-  letter-spacing: 2.3px;
-  font-weight: 700;
-  margin: 0 0 18px;
+  margin: 0 0 1.12cqw;
 }
-
 .eyebrow i {
   font-style: normal;
-  padding: 0 8px;
+  padding: 0 0.65cqw;
 }
-
 .hero h1 {
-  font: 500 47px/.99 'Playfair Display', serif;
-  letter-spacing: -1.5px;
-  margin: 0 0 22px;
-  color: var(--ink);
+  font:
+    600 4.4cqw/0.98 "Cormorant Garamond",
+    Georgia,
+    serif;
+  letter-spacing: -0.018em;
+  margin: 0 0 1.3cqw;
 }
-
 .lead {
-  font-size: 12.5px;
-  line-height: 1.45;
-  max-width: 330px;
-  margin: 0 0 18px;
-  color: #5c4e46;
+  font-size: 1cqw;
+  line-height: 1.46;
+  max-width: 26cqw;
+  margin: 0 0 0.95cqw;
 }
-
 .button {
   display: inline-block;
+  border: 0;
+  border-radius: 2px;
+  padding: 0.78cqw 1.8cqw;
   background: var(--rust);
   color: #fff;
   text-decoration: none;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  padding: 12px 24px;
-  border-radius: 2px;
-  width: fit-content;
-  transition: background-color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  position: relative;
-  z-index: 2;
+  font-size: 0.82cqw;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  transition: background 0.2s;
 }
-
 .button:hover {
-  background: #994326;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(180, 83, 50, 0.15);
+  background: #87432c;
 }
-
 .hero-visual {
-  position: relative;
-  overflow: hidden;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 56%;
   height: 100%;
-  display: flex;
-  align-items: stretch;
+  pointer-events: none;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, #000 12%);
 }
-
 .hero-img {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  display: block;
-  z-index: 1;
+  object-fit: contain;
+  object-position: right bottom;
+  mix-blend-mode: multiply;
 }
-
-.hero-curve {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 200px;
-  fill: var(--paper);
-  pointer-events: none;
-  z-index: 2;
-  transform: translateX(-1px);
-}
-
-/* Mindset Section */
 .mindset {
-  min-height: 126px;
-  background: var(--sand);
-  display: grid;
-  grid-template-columns: 28% 28% 27% 17%;
-  align-items: center;
-  padding: 16px 72px;
-  border-bottom: 1px solid var(--line);
   position: relative;
+  display: grid;
+  grid-template-columns: 24% 28% 28% 20%;
+  align-items: center;
+  min-height: 11.2cqw;
+  padding: 1.1cqw 5.9cqw;
+  background: linear-gradient(100deg, #f4eadd, #f5eee4);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
 }
-
 .mindset h2 {
-  font: 400 30px/1.08 'Playfair Display', serif;
+  font:
+    500 3cqw/1.04 "Cormorant Garamond",
+    Georgia,
+    serif;
   color: var(--rust);
   margin: 0;
   border-right: 1px solid var(--line);
-  padding-right: 20px;
-  height: 100%;
-  display: flex;
-  align-items: center;
+  padding-right: 2cqw;
 }
-
+.mindset-col {
+  padding-left: 4cqw;
+  position: relative;
+  z-index: 1;
+}
 .mindset p {
-  font-size: 11px;
-  line-height: 1.5;
+  font-size: 0.91cqw;
+  line-height: 1.58;
   margin: 0;
-  padding: 0 37px;
 }
-
-.botanical-container {
-  width: 100%;
-  height: 100%;
-  min-width: 245px;
-  overflow: hidden;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+.botanical {
+  position: absolute;
+  right: 0;
+  bottom: -0.6cqw;
+  width: 22cqw;
+  height: 12cqw;
+  color: #bd8e6b;
+  opacity: 0.48;
 }
-
-.botanical-img {
-  width: 360px;
-  height: 198px;
-  max-width: none;
-  object-fit: contain;
-  object-position: center;
-  opacity: .9;
-  filter: contrast(1.45) sepia(.2) saturate(1.2);
-  mix-blend-mode: multiply;
-  transform: scale(1.2);
-  transform-origin: right center;
-}
-
-/* Flavours Section */
 .flavours {
-  padding: 22px 72px 30px;
+  padding: 0.7cqw 5.7cqw 1.2cqw;
   border-bottom: 1px solid var(--line);
 }
-
 .flavours > h2 {
   text-align: center;
-  font: 400 26px 'Playfair Display', serif;
-  margin: 0 0 4px;
+  font:
+    500 2.25cqw/1.2 "Cormorant Garamond",
+    Georgia,
+    serif;
+  margin: 0;
 }
-
 .section-subtitle {
+  font-size: 0.79cqw;
   text-align: center;
-  font-size: 10px;
-  margin: 0 0 24px;
-  color: #756254;
+  margin: 0.12cqw 0 -0.6cqw;
 }
-
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 31px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2.25cqw;
 }
-
 .product {
   display: flex;
   align-items: center;
-  gap: 20px;
-  background: transparent;
+  gap: 1.35cqw;
+  min-width: 0;
 }
-
 .product-image-container {
-  width: 108px;
-  height: 158px;
+  border: 0;
+  background: none;
+  padding: 0;
+  width: 10cqw;
+  height: 14.2cqw;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
-
 .product-pouch-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 38%;
-  filter: drop-shadow(0 6px 10px rgba(81, 53, 33, 0.12));
-  transition: transform 0.3s ease;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 3px #4a2f2010);
+  transition: transform 0.25s;
 }
-
-.product:hover .product-pouch-img {
-  transform: translateY(-4px);
+.product-image-container:hover .product-pouch-img {
+  transform: translateY(-4px) rotate(-2deg);
 }
-
 .product-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  padding-top: 1.3cqw;
+  min-width: 0;
 }
-
 .product-info h3 {
-  font-size: 12px;
-  line-height: 1.2;
-  letter-spacing: 0.5px;
-  margin: 0 0 8px;
-  font-weight: 700;
+  font-size: 1.03cqw;
+  line-height: 1.35;
+  letter-spacing: 0.015em;
+  font-weight: 500;
+  margin: 0 0 0.7cqw;
 }
-
-.product-info h3 span, .product-info p span {
+.product-info h3 span,
+.product-info p span {
   display: block;
 }
-
 .product-info p {
-  font-size: 10px;
-  line-height: 1.5;
-  margin: 0 0 10px;
-  color: #5c4e46;
+  font-size: 0.78cqw;
+  line-height: 1.55;
+  margin: 0 0 0.75cqw;
 }
-
 .price {
-  font-size: 10px;
-  border-top: 1px solid #cdbba8;
-  padding-top: 7px;
+  font-size: 0.77cqw;
+  border-top: 1px solid #d9cabb;
+  padding-top: 0.65cqw;
   white-space: nowrap;
-  color: var(--ink);
 }
-
 .price b {
-  padding: 0 8px;
-  color: var(--rust);
+  font-weight: 400;
+  padding: 0 0.55cqw;
 }
-
-/* Service Strip (Review & Delivery) */
 .service-strip {
   display: grid;
-  grid-template-columns: 1fr 1.35fr;
-  min-height: 100px;
-  background: #f8f1e9;
+  grid-template-columns: 45% 55%;
+  background: #f5ede2;
   border-bottom: 1px solid var(--line);
+  min-height: 8.8cqw;
 }
-
 .review {
   text-align: center;
   border-right: 1px solid var(--line);
-  padding: 24px 30px;
+  padding: 1.1cqw 1.8cqw 0.7cqw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-
-.review .mini-label, .delivery .mini-label {
-  color: var(--rust);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  margin: 0 0 8px;
+.mini-label {
+  font-size: 0.75cqw;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  margin: 0 0 0.55cqw;
 }
-
 .review blockquote {
-  font: 400 20px 'Playfair Display', serif;
-  margin: 0 0 6px;
-  color: var(--ink);
+  font:
+    500 1.75cqw/1.15 "Cormorant Garamond",
+    Georgia,
+    serif;
+  margin: 0 0 0.6cqw;
 }
-
 .review small {
-  font-size: 10px;
-  color: #756254;
+  font-size: 0.78cqw;
 }
-
 .dots {
-  color: var(--rust);
-  font-size: 11px;
-  margin-top: 11px;
-  letter-spacing: 4px;
+  display: flex;
+  gap: 0.95cqw;
+  margin-top: 0.85cqw;
 }
-
+.dots span {
+  width: 0.5cqw;
+  height: 0.5cqw;
+  border: 1px solid #b49070;
+  border-radius: 50%;
+}
+.dots .active {
+  background: var(--rust);
+  border-color: var(--rust);
+}
 .delivery {
   display: grid;
-  grid-template-columns: 80px 1.2fr 1fr;
+  grid-template-columns: 4.8cqw 14.7cqw 1fr;
   align-items: center;
-  padding: 24px 58px;
-  gap: 18px;
+  padding: 1.2cqw 4cqw 1.2cqw 5.7cqw;
+  gap: 2.3cqw;
 }
-
 .delivery-icon-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   color: var(--rust);
 }
-
+.icon-truck {
+  width: 5cqw;
+  height: 4.2cqw;
+  stroke-width: 0.75;
+}
 .delivery h2 {
-  font: 400 21px/1.15 'Playfair Display', serif;
+  font:
+    500 1.8cqw/1.13 "Cormorant Garamond",
+    Georgia,
+    serif;
   margin: 0;
-  color: var(--ink);
 }
-
 .delivery-copy p {
-  font-size: 10px;
-  line-height: 1.45;
+  font-size: 0.85cqw;
+  line-height: 1.55;
   margin: 0;
-  color: #5c4e46;
 }
-
-/* Bottom Values Footer */
 .values {
-  min-height: 65px;
-  background: #f0e3d4;
+  min-height: 5.2cqw;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   align-items: center;
-  padding: 0 75px;
+  background: #efe4d5;
+  padding: 0 5.5cqw;
 }
-
 .value-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 1.4cqw;
   color: var(--rust);
 }
-
 .value-icon {
-  stroke: var(--rust);
-  flex-shrink: 0;
+  width: 3cqw;
+  height: 3cqw;
+  stroke-width: 0.8;
 }
-
 .value-item span {
-  font: 700 9px/1.35 'DM Sans', sans-serif;
-  letter-spacing: 1.2px;
-  color: #755441;
+  font-size: 0.72cqw;
+  line-height: 1.65;
+  letter-spacing: 0.12em;
+  color: #674735;
+  font-weight: 500;
 }
-
-/* Media Queries (Responsive Design) */
-@media (max-width: 900px) {
-  .hero-curve {
-    width: 100px;
-  }
-  .variation span {
-    display: none;
-  }
-  .header {
-    padding: 0 22px;
-  }
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -100px;
+  z-index: 10;
+  background: var(--paper);
+  padding: 12px;
+}
+.skip-link:focus {
+  top: 12px;
+}
+.info-dialog {
+  position: fixed;
+  max-width: 600px;
+  width: calc(100% - 36px);
+  padding: 45px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: var(--paper);
+  box-shadow: 0 20px 100px #251e192e;
+}
+.info-dialog::backdrop {
+  background: #251e1955;
+  backdrop-filter: blur(4px);
+}
+.info-dialog h2 {
+  font:
+    500 38px/1.05 "Cormorant Garamond",
+    Georgia,
+    serif;
+  margin-bottom: 22px;
+}
+.info-dialog p {
+  font-size: 14px;
+  line-height: 1.65;
+}
+.info-dialog .eyebrow {
+  font-size: 10px;
+}
+.dialog-close {
+  position: absolute;
+  right: 16px;
+  top: 10px;
+  font-size: 28px;
+  border: 0;
+  background: none;
+  color: var(--rust);
+}
+.info-dialog label {
+  font-size: 12px;
+}
+.info-dialog input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 14px;
+  border: 1px solid #cdbba7;
+  border-radius: 2px;
+  background: #fffaf3;
+}
+.search-results button {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  width: 100%;
+  padding: 16px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  text-align: left;
+  font-size: 13px;
+  color: var(--ink);
+}
+.search-results span {
+  white-space: nowrap;
+  color: var(--rust);
+}
+.info-dialog .button {
+  font-size: 11px;
+  padding: 12px 18px;
+}
+.product-detail {
+  display: grid;
+  grid-template-columns: 42% 1fr;
+  gap: 24px;
+  align-items: center;
+}
+.product-detail img {
+  width: 100%;
+  height: auto;
+}
+.availability {
+  color: var(--rust);
+}
+@media (max-width: 1100px) and (min-width: 901px) {
   .nav {
-    gap: 18px;
+    font-size: 9px;
+    gap: 3cqw;
   }
-  .nav-left a:nth-child(3) {
-    display: none;
-  }
-  .hero-copy {
-    padding-left: 35px;
-  }
-  .hero h1 {
-    font-size: 38px;
-  }
-  .mindset {
-    padding: 16px 35px;
-    grid-template-columns: 30% 30% 30% 10%;
+  .lead {
+    font-size: 11px;
   }
   .mindset p {
-    padding: 0 15px;
+    font-size: 10px;
+  }
+  .product-info p,
+  .price,
+  .delivery-copy p {
+    font-size: 9px;
+  }
+  .mini-label,
+  .section-subtitle,
+  .value-item span {
+    font-size: 8px;
+  }
+}
+@media (max-width: 900px) {
+  .header {
+    height: 90px;
+    padding: 17px 22px;
+    gap: 20px;
+    align-items: center;
+  }
+  .logo {
+    font-size: 25px;
+  }
+  .logo span {
+    font-size: 18px;
+  }
+  .nav {
+    font-size: 9px;
+    gap: 16px;
+  }
+  .nav-left button {
+    display: none;
+  }
+  .nav-right {
+    gap: 16px;
+  }
+  .nav-right button:first-child {
+    display: none;
+  }
+  .icon-search,
+  .icon-bag {
+    height: 18px;
+    width: 18px;
+  }
+  .hero {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-copy {
+    width: 100%;
+    padding: 20px 28px 0;
+  }
+  .eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    margin-bottom: 16px;
+  }
+  .eyebrow i {
+    padding: 0 5px;
+  }
+  .hero h1 {
+    font-size: clamp(37px, 7.9vw, 58px);
+    margin-bottom: 20px;
+  }
+  .lead {
+    font-size: 12px;
+    line-height: 1.6;
+    max-width: 330px;
+    margin-bottom: 13px;
+  }
+  .button {
+    font-size: 10px;
+    padding: 11px 18px;
+  }
+  .hero-visual {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3/2;
+    margin-top: -3px;
+    mask-image: linear-gradient(to bottom, transparent, #000 12%);
+  }
+  .hero-img {
+    width: 100%;
+    height: auto;
+  }
+  .mindset {
+    padding: 26px 28px;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    min-height: 0;
+  }
+  .mindset h2 {
+    font-size: 35px;
+    border: 0;
+    grid-column: 1/-1;
+    position: relative;
+    z-index: 1;
+  }
+  .mindset-col {
+    padding: 0;
+  }
+  .mindset p {
+    font-size: 11px;
+    line-height: 1.65;
+  }
+  .botanical {
+    width: 190px;
+    height: 140px;
+    top: 5px;
+    right: -15px;
+    opacity: 0.3;
   }
   .flavours {
-    padding-left: 35px;
-    padding-right: 35px;
+    padding: 22px 20px;
+  }
+  .flavours > h2 {
+    font-size: 28px;
+    line-height: 1.1;
+    max-width: 300px;
+    margin: auto;
+  }
+  .section-subtitle {
+    font-size: 9px;
+    margin: 9px 0 18px;
   }
   .product-grid {
-    gap: 15px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 12px;
   }
   .product {
     gap: 10px;
-  }
-  .product-image-container {
-    width: 82px;
-    height: 145px;
-  }
-  .delivery {
-    padding-left: 28px;
-    padding-right: 28px;
-  }
-}
-
-@media (max-width: 650px) {
-  .hero-curve {
-    display: none;
-  }
-  .header {
-    height: 68px;
-    padding: 0 18px;
-  }
-  .nav {
-    font-size: 8px;
-    gap: 11px;
-  }
-  .nav-right a {
-    display: none;
-  }
-  .logo {
-    font-size: 18px;
-  }
-  .logo span {
-    font-size: 13px;
-  }
-  .hero {
-    display: block;
-  }
-  .hero-copy {
-    padding: 42px 27px 34px;
-  }
-  .hero h1 {
-    font-size: 40px;
-  }
-  .hero-visual {
-    height: 260px;
-  }
-  .mindset {
-    display: block;
-    padding: 28px 27px;
-  }
-  .mindset h2 {
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 18px;
-    height: auto;
-  }
-  .mindset p {
-    padding: 18px 0 0;
-  }
-  .botanical-container {
-    display: none;
-  }
-  .flavours {
-    padding: 25px 20px;
-  }
-  .flavours > h2 {
-    font-size: 24px;
-  }
-  .product-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 25px 12px;
-  }
-  .product {
     flex-direction: column;
-    align-items: center;
     text-align: center;
   }
   .product-image-container {
-    width: 110px;
-    height: 155px;
+    width: 118px;
+    height: 175px;
+  }
+  .product-info {
+    padding: 0;
   }
   .product-info h3 {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  .product-info p {
     font-size: 11px;
+    margin-bottom: 10px;
+  }
+  .price {
+    font-size: 10px;
+    padding-top: 8px;
+  }
+  .price b {
+    padding: 0 7px;
   }
   .service-strip {
-    display: block;
+    grid-template-columns: 1fr;
   }
   .review {
     border-right: 0;
     border-bottom: 1px solid var(--line);
+    padding: 23px;
+  }
+  .mini-label {
+    font-size: 9px;
+    margin-bottom: 8px;
+  }
+  .review blockquote {
+    font-size: 24px;
+    margin-bottom: 7px;
+  }
+  .review small {
+    font-size: 10px;
+  }
+  .dots {
+    margin-top: 12px;
+    gap: 11px;
+  }
+  .dots span {
+    width: 5px;
+    height: 5px;
   }
   .delivery {
-    grid-template-columns: 55px 1fr;
-    padding: 25px 24px;
+    padding: 24px;
+    grid-template-columns: 48px 1fr;
+    gap: 15px 20px;
+  }
+  .icon-truck {
+    width: 48px;
+    height: 42px;
+  }
+  .delivery h2 {
+    font-size: 25px;
   }
   .delivery-copy {
     grid-column: 2;
   }
+  .delivery-copy p {
+    font-size: 11px;
+  }
   .values {
-    padding: 15px 18px;
+    padding: 23px 20px;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    gap: 23px 15px;
   }
   .value-item {
     justify-content: flex-start;
+    gap: 12px;
+  }
+  .value-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .value-item span {
+    font-size: 8px;
+  }
+  .info-dialog {
+    padding: 40px 24px 28px;
+  }
+  .info-dialog h2 {
+    font-size: 32px;
+  }
+  .product-detail {
+    gap: 16px;
+  }
+  .product-detail h2 {
+    font-size: 28px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
+
+.hero-pack {
+  position: absolute;
+  z-index: 1;
+  right: 16%;
+  bottom: 2.6cqw;
+  width: 20cqw;
+  height: 30.5cqw;
+  filter: drop-shadow(7px 10px 5px #38291b20);
+}
+.detail-pack {
+  width: 100%;
+  height: auto;
+  max-height: 350px;
+}
+@media (max-width: 900px) {
+  .hero-pack {
+    bottom: 5cqw;
+    right: 17%;
+    width: 30cqw;
+    height: 49cqw;
+  }
+}
+/* Lightweight depth and movement, built entirely in CSS. */
+.hero-pack-button,
+.detail-pack-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  perspective: 800px;
+}
+.hero-pack-button > svg {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pop-hint {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 6px 12px;
+  color: var(--rust);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.hero-pack-button:hover .pop-hint,
+.hero-pack-button:focus-visible .pop-hint {
+  opacity: 1;
+}
+.product-image-container {
+  perspective: 800px;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .hero-pack-button:hover > svg {
+    transform: rotateY(-10deg) rotateZ(3deg) translateY(-5px);
+  }
+  .product-image-container:hover .product-pouch-img {
+    transform: rotateY(-14deg) rotateZ(-4deg) translateY(-7px) scale(1.045);
+  }
+  .detail-pack-button:hover .detail-pack {
+    transform: rotate(-3deg) scale(1.03);
+  }
+}
+.detail-pack {
+  transition: transform 0.25s;
+}
+.makhana-burst {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 10000;
+  contain: strict;
+}
+.makhana-burst::backdrop {
+  background: transparent;
+  pointer-events: none;
+}
+.makhana-pop {
+  position: absolute;
+  display: block;
+  will-change: transform, opacity;
+  border-radius: 44% 56% 48% 43% / 46% 40% 58% 54%;
+  background:
+    radial-gradient(ellipse at 28% 32%, #785232 0 3%, transparent 4%),
+    radial-gradient(ellipse at 68% 57%, #91613c 0 4%, transparent 6%),
+    radial-gradient(ellipse at 44% 78%, #ad8157 0 2%, transparent 4%),
+    radial-gradient(ellipse at 63% 22%, #baa27c 0 2%, transparent 4%),
+    radial-gradient(
+      circle at 34% 24%,
+      #fffef2 8%,
+      #f7e9c9 43%,
+      #dec59a 72%,
+      #a37c51 100%
+    );
+  box-shadow:
+    inset 2px 3px 5px #fff9e9,
+    inset -3px -4px 6px #926d423b,
+    2px 7px 9px #38231422;
+}
+.makhana-pop::after {
+  content: "";
+  position: absolute;
+  left: 32%;
+  top: 31%;
+  width: 36%;
+  height: 38%;
+  border-radius: 50%;
+  box-shadow: inset 2px 2px 4px #af8a5540;
+  background: radial-gradient(ellipse, #fff7df88, transparent);
+}
+@keyframes gentle-arrival {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes dialog-arrival {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-copy {
+    animation: gentle-arrival 0.75s ease-out both;
+  }
+  .info-dialog[open] {
+    animation: dialog-arrival 0.3s ease-out both;
+  }
+  @supports (animation-timeline: view()) {
+    .mindset > h2,
+    .mindset-col,
+    .flavours > h2,
+    .product,
+    .review,
+    .delivery,
+    .value-item {
+      animation: gentle-arrival 0.6s ease-out both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 18%;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+  }
+  .makhana-burst {
+    display: none !important;
+  }
+}
+@media (hover: none) {
+  .pop-hint {
+    opacity: 1;
+    font-size: 9px;
+    bottom: -8px;
+  }
+}
+/* Client-supplied lifestyle photographs: show the entire image, uncropped. */
+.product {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 0;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid #e3d5c7;
+  border-radius: 3px;
+  background: #fcf8f2;
+  box-shadow: 0 8px 22px #3f271008;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.product-image-container {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  min-height: 0;
+  aspect-ratio: 4 / 4.4;
+  overflow: hidden;
+  border-bottom: 1px solid #e3d5c7;
+}
+.product-pouch-img {
+  object-fit: cover;
+  object-position: center;
+  filter: none;
+  border-radius: 0;
+}
+.product-info {
+  display: grid;
+  grid-template-rows: auto minmax(2.8em, auto) auto;
+  padding: clamp(14px, 1.3cqw, 22px);
+  text-align: left;
+}
+.product-info h3 span,
+.product-info p span {
+  display: inline;
+}
+.product-info h3 span + span::before,
+.product-info p span + span::before {
+  content: " ";
+}
+.product-info h3 {
+  font-size: clamp(12px, 1.03cqw, 18px);
+  margin: 0 0 9px;
+}
+.product-info p,
+.price {
+  font-size: clamp(11px, 0.78cqw, 14px);
+}
+.product-info p {
+  margin: 0 0 12px;
+}
+.price {
+  align-self: end;
+}
+.product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 30px #3f271014;
+}
+.section-subtitle {
+  margin-bottom: 20px;
+}
+.detail-pack {
+  object-fit: contain;
+  border-radius: 4px;
+}
+@media (max-width: 900px) {
+  .product-image-container {
+    height: auto;
+    max-height: none;
+  }
+  .product-info {
+    padding: 13px 12px 14px;
+  }
+  .product-info h3 {
+    font-size: 12px;
+  }
+  .product-info p,
+  .price {
+    font-size: 11px;
+  }
+}
+@media (max-width: 480px) {
+  .product-image-container {
+    height: auto;
+    aspect-ratio: 4 / 4.75;
+  }
+  .product {
+    gap: 0;
+  }
+}
+/* A single genuine review, with room for the complete customer quote. */
+.review {
+  padding: clamp(26px, 3cqw, 48px) clamp(24px, 3.5cqw, 58px);
+}
+.review blockquote {
+  font-size: clamp(20px, 1.6cqw, 27px);
+  line-height: 1.4;
+  max-width: 38ch;
+  margin: 12px 0 16px;
+  text-wrap: pretty;
+}
+.review small {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+/* The client hero is one complete photograph, with no separate pouch overlay. */
+.hero-scene-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  pointer-events: auto;
+  color: inherit;
+  aspect-ratio: auto;
+  height: 100%;
+}
+.hero-scene-button .hero-img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  mix-blend-mode: normal;
+}
+.hero-scene-button .pop-hint {
+  left: 70%;
+  bottom: 14px;
+}
+.hero-scene-button:hover .pop-hint,
+.hero-scene-button:focus-visible .pop-hint {
+  opacity: 1;
+}
+.hero-scene-button:focus-visible {
+  outline-offset: -5px;
+}
+@media (max-width: 900px) {
+  .hero-scene-button {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 901/572;
   }
 }
