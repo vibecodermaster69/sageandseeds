@@ -13,7 +13,7 @@
   --line: #e6d9c8;
   --cream: #fffaf3;
   --serif: "Cormorant Garamond", Georgia, serif;
-  --gutter: clamp(20px, 5vw, 48px);
+  --gutter: clamp(20px, 5vw, 72px);
 }
 * {
   box-sizing: border-box;
@@ -66,7 +66,7 @@ blockquote {
   overflow: clip;
 }
 .wrap {
-  width: min(1180px, 100% - 2 * var(--gutter));
+  width: min(1400px, 100% - 2 * var(--gutter));
   margin-inline: auto;
 }
 .skip-link {
@@ -95,42 +95,21 @@ blockquote {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 32px;
-  min-height: 76px;
+  min-height: 92px;
 }
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  display: block;
+  line-height: 0;
   text-decoration: none;
 }
-.logo-mark {
-  flex-shrink: 0;
-  fill: var(--sage);
+.logo-image {
+  display: block;
+  width: auto;
 }
-.logo-mark .logo-text {
-  fill: var(--ink);
-  font-family: var(--serif);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-.brand-name {
+.footer-logo {
   display: flex;
-  flex-direction: column;
-  font: 500 1.55rem/1 var(--serif);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.brand-name i {
-  font-weight: 400;
-}
-.brand-name span {
-  white-space: nowrap;
-}
-.brand-name small {
-  margin-top: 5px;
-  font: 500 0.62rem/1 "DM Sans", sans-serif;
-  letter-spacing: 0.18em;
-  color: var(--sage-deep);
+  justify-content: center;
+  margin-bottom: 32px;
 }
 .nav {
   display: flex;
@@ -225,16 +204,21 @@ h2 {
 
 /* Hero */
 .hero {
-  padding: clamp(36px, 6vw, 72px) 0 clamp(48px, 7vw, 88px);
-  background:
-    radial-gradient(60% 80% at 85% 10%, #f1e6d6 0%, transparent 70%),
-    var(--paper);
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: clamp(520px, 44vw, 780px);
+  overflow: hidden;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
 }
 .hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  align-items: center;
-  gap: clamp(28px, 5vw, 72px);
+  padding: 56px 0;
+}
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: min(560px, 46%);
 }
 .hero h1 {
   margin: 0 0 24px;
@@ -289,22 +273,27 @@ h2 {
 .dots i + i {
   margin-left: -4px;
 }
+/* The photo bleeds off the right edge and fades into the page on its left. */
 .hero-visual {
-  position: relative;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
   display: block;
-  width: 100%;
+  width: 62%;
   padding: 0;
   border: 0;
-  border-radius: 24px;
   background: none;
-  box-shadow: 0 30px 60px -28px #4a2f2066;
-  perspective: 800px;
+  mask-image: linear-gradient(to right, transparent 0%, #000 24%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 24%);
 }
 .hero-visual img {
   display: block;
   width: 100%;
-  height: auto;
-  border-radius: 24px;
+  height: 100%;
+  object-fit: cover;
+  object-position: 80% 60%;
 }
 .pop-hint {
   position: absolute;
@@ -459,37 +448,38 @@ h2 {
   text-transform: uppercase;
   color: var(--sage-deep);
 }
+/* Four steps as one quiet timeline across the full width of the band. */
 .steps {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 32px 0 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: clamp(40px, 6vw, 72px);
+  margin-bottom: 0;
   padding: 0;
   list-style: none;
 }
 .steps li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px 6px 6px;
-  border: 1px solid #cfd6bd;
-  border-radius: 999px;
-  background: var(--paper);
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--sage-deep);
+  position: relative;
+  padding: 28px 24px 0 0;
+  border-top: 1px solid #c5cdb0;
+  font: 500 clamp(1.5rem, 2.4vw, 2rem) / 1.1 var(--serif);
+  color: var(--ink);
 }
-.steps b {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
+.steps li::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: var(--sage);
-  color: #fff;
-  font-size: 0.75rem;
+}
+.steps b {
+  display: block;
+  margin-bottom: 8px;
+  font: 600 0.72rem/1 "DM Sans", sans-serif;
+  letter-spacing: 0.2em;
+  color: var(--sage-deep);
 }
 
 /* Shop */
@@ -1025,25 +1015,44 @@ h2 {
     overflow-x: auto;
     scrollbar-width: none;
   }
-  .brand-name {
-    font-size: 1.3rem;
-  }
-  .logo-mark {
-    width: 46px;
-    height: 46px;
+  .brand .logo-image {
+    height: 60px;
   }
   html {
-    scroll-padding-top: 130px;
+    scroll-padding-top: 140px;
   }
-  .hero-grid,
   .split {
     grid-template-columns: 1fr;
   }
   .split .section-head {
     position: static;
   }
+  .hero {
+    display: block;
+    min-height: 0;
+  }
+  .hero-grid {
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 40px;
+  }
+  .hero-copy {
+    max-width: none;
+  }
   .hero-visual {
+    position: relative;
     order: -1;
+    width: auto;
+    margin: 0 calc(-1 * var(--gutter)) 28px;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+  .hero-visual img {
+    height: auto;
+  }
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 32px;
   }
   .values-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1056,9 +1065,6 @@ h2 {
 @media (max-width: 520px) {
   .product-grid {
     grid-template-columns: 1fr;
-  }
-  .brand-name small {
-    display: none;
   }
   .info-dialog {
     padding: 32px 22px;

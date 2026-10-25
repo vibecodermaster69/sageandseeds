@@ -166,12 +166,6 @@ export default function Home() {
         <div className="wrap header-inner">
           <a className="brand" href="#top" aria-label="Sage and Seeds home">
             <Logo />
-            <span className="brand-name">
-              <span>
-                Sage <i>&amp;</i> Seeds
-              </span>
-              <small>Clean. Nourishing. Honest.</small>
-            </span>
           </a>
           <nav className="nav" aria-label="Main">
             <a href="#makhana">What are Water Lily Pops?</a>
@@ -310,14 +304,6 @@ export default function Home() {
               More than a snack.
               <span>A labour of love.</span>
             </h2>
-            <ol className="steps" aria-label="How makhana is made">
-              {steps.map((step, i) => (
-                <li key={step}>
-                  <b>{i + 1}</b>
-                  {step}
-                </li>
-              ))}
-            </ol>
             <figure className="photo photo-scoop">
               <img
                 src="/images/hero-scene.webp"
@@ -352,6 +338,14 @@ export default function Home() {
             </p>
           </div>
         </div>
+        <ol className="wrap steps" aria-label="How makhana is made">
+          {steps.map((step, i) => (
+            <li key={step}>
+              <b>{String(i + 1).padStart(2, "0")}</b>
+              {step}
+            </li>
+          ))}
+        </ol>
       </section>
 
       <section className="section band-sand" id="story">
@@ -503,6 +497,9 @@ export default function Home() {
       </section>
 
       <footer className="values">
+        <div className="footer-logo">
+          <Logo full height={150} />
+        </div>
         <div className="wrap values-grid">
           {values.map((value) => (
             <div className="value-item" key={value.label}>
