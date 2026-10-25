@@ -402,6 +402,63 @@ h2 {
   font: italic 400 1.3rem/1.6 var(--serif);
   color: var(--ink);
 }
+.has-botanical {
+  position: relative;
+  overflow: hidden;
+}
+.has-botanical > .wrap {
+  position: relative;
+}
+.botanical {
+  position: absolute;
+  right: -40px;
+  bottom: -20px;
+  width: min(520px, 70vw);
+  color: var(--sage);
+  opacity: 0.28;
+  pointer-events: none;
+}
+.photo {
+  position: relative;
+  margin: 32px 0 0;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 24px 48px -28px #4a2f2066;
+}
+.photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-bowl {
+  aspect-ratio: 5 / 4;
+}
+.photo-bowl img {
+  transform: scale(1.75);
+  transform-origin: 21% 76%;
+}
+.photo-scoop {
+  aspect-ratio: 3 / 2;
+}
+.band-sage .botanical {
+  bottom: -70px;
+  width: min(380px, 70vw);
+  opacity: 0.2;
+}
+.photo figcaption {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #fbf7f0e6;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+}
 .steps {
   display: flex;
   flex-wrap: wrap;

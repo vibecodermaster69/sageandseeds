@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Botanical from "./botanical";
 import Logo from "./logo";
 import Packaging, { type PackKind } from "./packaging";
 import { useMakhanaBurst } from "./use-makhana-burst";
@@ -256,7 +257,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section" id="makhana">
+      <section className="section has-botanical" id="makhana">
+        <Botanical />
         <div className="wrap split">
           <header className="section-head">
             <p className="eyebrow">What are Water Lily Pops?</p>
@@ -264,6 +266,16 @@ export default function Home() {
               Meet Makhana
               <span>Mindful snacking rooted in tradition.</span>
             </h2>
+            <figure className="photo photo-bowl">
+              <img
+                src="/images/hero-scene.webp"
+                alt="A speckled ceramic bowl heaped with white puffed makhana on linen"
+                width="1536"
+                height="1024"
+                loading="lazy"
+              />
+              <figcaption>The seed of the water lily</figcaption>
+            </figure>
           </header>
           <div className="prose">
             <p className="prose-lead">
@@ -289,7 +301,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section band-sage">
+      <section className="section band-sage has-botanical">
+        <Botanical />
         <div className="wrap split">
           <header className="section-head">
             <p className="eyebrow">The journey behind the crunch</p>
@@ -305,6 +318,15 @@ export default function Home() {
                 </li>
               ))}
             </ol>
+            <figure className="photo photo-scoop">
+              <img
+                src="/images/hero-scene.webp"
+                alt="A wooden scoop of freshly popped makhana on a stone counter"
+                width="1536"
+                height="1024"
+                loading="lazy"
+              />
+            </figure>
           </header>
           <div className="prose">
             <p className="prose-lead">
