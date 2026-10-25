@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Botanical from "./botanical";
 import Logo from "./logo";
 import Packaging, { type PackKind } from "./packaging";
+import StepArt, { type StepName } from "./step-art";
 import { useMakhanaBurst } from "./use-makhana-burst";
 
 const products = [
@@ -295,7 +296,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section band-sage has-botanical">
+      <section className="section band-parchment has-botanical">
+        <Botanical />
         <Botanical />
         <div className="wrap split">
           <header className="section-head">
@@ -341,6 +343,7 @@ export default function Home() {
         <ol className="wrap steps" aria-label="How makhana is made">
           {steps.map((step, i) => (
             <li key={step}>
+              <StepArt name={step.toLowerCase() as StepName} />
               <b>{String(i + 1).padStart(2, "0")}</b>
               {step}
             </li>
