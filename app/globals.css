@@ -575,25 +575,31 @@ h2 {
   font-weight: 500;
   white-space: nowrap;
 }
-.delivery-note {
-  display: flex;
+.delivery {
+  padding: clamp(28px, 4vw, 44px) 0;
+  background: var(--sage-wash);
+  border-block: 1px solid var(--line);
+}
+.delivery-inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 0.8fr);
   align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin-top: 40px;
+  gap: clamp(18px, 4vw, 48px);
   color: var(--rust);
 }
-.delivery-note svg {
-  flex-shrink: 0;
+.delivery .eyebrow {
+  margin-bottom: 6px;
 }
-.delivery-note p {
+.delivery h2 {
   margin: 0;
-  font-size: 0.9rem;
-  color: var(--muted);
-}
-.delivery-note b {
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  line-height: 1.15;
   color: var(--ink);
-  font-weight: 600;
+}
+.delivery-copy {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted);
 }
 
 /* Reviews */
@@ -1063,7 +1069,7 @@ h2 {
   .product-detail {
     grid-template-columns: 1fr;
   }
-  .delivery-note {
-    align-items: flex-start;
+  .delivery-inner {
+    grid-template-columns: 1fr;
   }
 }

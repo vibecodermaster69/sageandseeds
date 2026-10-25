@@ -448,18 +448,26 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="delivery-note">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect x="1" y="3" width="15" height="13" />
-              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
-              <circle cx="5.5" cy="18.5" r="2.5" />
-              <circle cx="18.5" cy="18.5" r="2.5" />
-            </svg>
-            <p>
-              <b>We currently ship directly to you.</b> From our family to your
-              pantry, delivered with care. Shipping costs are added at checkout.
-            </p>
+        </div>
+      </section>
+
+      <section className="delivery" id="delivery" aria-label="Delivery">
+        <div className="wrap delivery-inner">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect x="1" y="3" width="15" height="13" />
+            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+            <circle cx="5.5" cy="18.5" r="2.5" />
+            <circle cx="18.5" cy="18.5" r="2.5" />
+          </svg>
+          <div>
+            <p className="eyebrow">Delivery</p>
+            <h2>We currently ship directly to you.</h2>
           </div>
+          <p className="delivery-copy">
+            From our family to your pantry, delivered with care.
+            <br />
+            Shipping costs are added at checkout.
+          </p>
         </div>
       </section>
 
