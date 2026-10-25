@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Botanical from "./botanical";
 import Logo from "./logo";
 import Packaging, { type PackKind } from "./packaging";
+import { REVIEW_DISPLAY_MAX } from "./lib/review-limits";
+import ReviewCarousel, { type PublicReview } from "./review-carousel";
 import StepArt, { type StepName } from "./step-art";
 import { useMakhanaBurst } from "./use-makhana-burst";
 
@@ -36,14 +38,9 @@ const products = [
 ];
 
 type Product = (typeof products)[number];
-type PublicReview = {
-  id: string;
-  name: string;
-  rating: number;
-  message: string;
-};
 
-// Supplied by the client; approved reviews from the site are added after these.
+// The one genuine review supplied by the client; reviews approved in the admin
+// page are added after it in the carousel.
 const featuredReviews: PublicReview[] = [
   {
     id: "nidhi",
@@ -51,13 +48,6 @@ const featuredReviews: PublicReview[] = [
     rating: 5,
     message:
       "Absolutely love these makhanas—light, crunchy and satisfyingly filling!",
-  },
-  {
-    id: "alberta",
-    name: "Alberta",
-    rating: 5,
-    message:
-      "Love the variety of flavours! While my son’s favourite is the Cacao Crunch, I can’t get enough of the Himalayan Pink Salt. Definitely recommend!",
   },
 ];
 
@@ -81,15 +71,6 @@ const values = [
     path: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z",
   },
 ];
-
-function Stars({ rating }: { rating: number }) {
-  return (
-    <div className="stars" role="img" aria-label={`${rating} out of 5 stars`}>
-      {"★".repeat(rating)}
-      <span>{"★".repeat(5 - rating)}</span>
-    </div>
-  );
-}
 
 export default function Home() {
   const popMakhana = useMakhanaBurst();
@@ -474,15 +455,7 @@ export default function Home() {
             <p className="eyebrow">What our customers say</p>
             <h2>Loved by busy, mindful snackers.</h2>
           </header>
-          <div className="review-grid">
-            {reviews.map((review) => (
-              <figure className="review" key={review.id}>
-                <Stars rating={review.rating} />
-                <blockquote>“{review.message.replace(/^“|”$/g, "")}”</blockquote>
-                <figcaption>— {review.name}</figcaption>
-              </figure>
-            ))}
-          </div>
+          <ReviewCarousel reviews={reviews} />
           <div className="review-cta">
             <button
               className="button button-outline"
@@ -633,7 +606,9 @@ export default function Home() {
                   </p>
                 )}
                 <p className="review-note">
-                  Every review is checked by our team before it is published.
+                  Every review is read by our team before it is published. To
+                  fit the review card we show up to {REVIEW_DISPLAY_MAX}{" "}
+                  characters, so we may shorten longer ones.
                 </p>
                 <button
                   className="button"

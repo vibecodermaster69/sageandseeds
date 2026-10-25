@@ -1,4 +1,9 @@
 import { NextResponse } from "next/server";
+import {
+  REVIEW_NAME_MAX,
+  REVIEW_SUBMIT_MAX,
+  REVIEW_SUBMIT_MIN,
+} from "../../lib/review-limits";
 import { addReview, listReviews } from "../../lib/reviews-store";
 
 export const dynamic = "force-dynamic";
@@ -37,15 +42,17 @@ export async function POST(request: Request) {
   const message = String(body.message ?? "").trim();
   const rating = Number(body.rating);
 
-  if (!name || name.length > 60) {
+  if (!name || name.length > REVIEW_NAME_MAX) {
     return NextResponse.json(
-      { error: "Please add your name (up to 60 characters)." },
+      { error: `Please add your name (up to ${REVIEW_NAME_MAX} characters).` },
       { status: 400 },
     );
   }
-  if (message.length < 10 || message.length > 800) {
+  if (message.length < REVIEW_SUBMIT_MIN || message.length > REVIEW_SUBMIT_MAX) {
     return NextResponse.json(
-      { error: "Please write between 10 and 800 characters." },
+      {
+        error: `Please write between ${REVIEW_SUBMIT_MIN} and ${REVIEW_SUBMIT_MAX} characters.`,
+      },
       { status: 400 },
     );
   }

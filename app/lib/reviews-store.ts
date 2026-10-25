@@ -88,11 +88,14 @@ export async function addReview(input: {
   return review;
 }
 
-export async function setReviewStatus(id: string, status: ReviewStatus) {
+export async function updateReview(
+  id: string,
+  patch: Partial<Pick<Review, "name" | "message" | "rating" | "status">>,
+) {
   const all = await load();
   const target = all.find((r) => r.id === id);
   if (!target) return null;
-  target.status = status;
+  Object.assign(target, patch);
   await save(all);
   return target;
 }

@@ -634,21 +634,81 @@ h2 {
 }
 
 /* Reviews */
-.review-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  gap: 24px;
-  max-width: 920px;
+.carousel {
+  max-width: 760px;
   margin: 0 auto;
+}
+.carousel-viewport {
+  overflow: hidden;
+  border-radius: 20px;
+}
+.carousel-track {
+  display: flex;
+  transition: transform 0.55s cubic-bezier(0.3, 0.7, 0.2, 1);
 }
 .review {
   display: flex;
+  flex: 0 0 100%;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
   margin: 0;
-  padding: 32px 30px;
+  padding: clamp(28px, 5vw, 48px) clamp(22px, 6vw, 64px);
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 20px;
   background: var(--cream);
+  text-align: center;
+}
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 22px;
+}
+.carousel-controls > button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0 0 3px;
+  border: 1px solid var(--rust);
+  border-radius: 50%;
+  background: none;
+  color: var(--rust);
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: background 0.2s, color 0.2s;
+}
+.carousel-controls > button:hover {
+  background: var(--rust);
+  color: #fff;
+}
+.carousel-dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+}
+.carousel-dots button {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.carousel-dots button::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid #b49070;
+  border-radius: 50%;
+}
+.carousel-dots button.on::before {
+  background: var(--rust);
+  border-color: var(--rust);
 }
 .stars {
   margin-bottom: 14px;
@@ -894,23 +954,96 @@ h2 {
 .admin-empty {
   color: var(--muted);
 }
-.admin-review {
-  padding: 18px 20px;
-  margin-bottom: 12px;
+.admin-narrow {
+  max-width: 440px;
+}
+.admin-login label,
+.admin-review label {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.admin-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.admin-link {
+  border: 0;
+  background: none;
+  color: var(--rust);
+  font-weight: 600;
+  text-decoration: underline;
+}
+.admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0 20px;
+}
+.admin-tabs button {
+  padding: 9px 18px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 999px;
+  background: var(--cream);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.admin-tabs button.on {
+  border-color: var(--rust);
+  background: var(--rust);
+  color: #fff;
+}
+.admin-review {
+  display: grid;
+  gap: 6px;
+  padding: 20px 22px;
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
   background: var(--cream);
 }
-.admin-review p {
-  margin: 4px 0 8px;
+.admin-review-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.admin-review textarea,
+.admin-review input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cdbba7;
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+}
+.admin-review textarea {
+  resize: vertical;
+  line-height: 1.55;
+}
+.admin-count {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--sage-deep);
+}
+.admin-count.over {
+  color: #a3302a;
+  font-weight: 600;
+}
+.admin-note {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
 }
 .admin-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 .admin-actions button {
-  padding: 8px 16px;
+  padding: 9px 18px;
   border: 1px solid var(--rust);
   border-radius: 999px;
   background: none;
@@ -918,9 +1051,21 @@ h2 {
   font-size: 0.8rem;
   font-weight: 600;
 }
-.admin-actions button:hover {
+.admin-actions button.primary {
   background: var(--rust);
   color: #fff;
+}
+.admin-actions button.danger {
+  margin-left: auto;
+  border-color: #a3302a;
+  color: #a3302a;
+}
+.admin-actions button:hover:not(:disabled) {
+  filter: brightness(0.92);
+}
+.admin-actions button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 /* Makhana burst */

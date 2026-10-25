@@ -1,40 +1,26 @@
-import { NextResponse } from "next/server";
-import { timingSafeEqual } from "crypto";
+import { NextRequest, NextResponse } from "next/server";
+import { SESSION_COOKIE, sessionValid } from "../../../lib/admin-auth";
+import {
+  REVIEW_DISPLAY_MAX,
+  REVIEW_NAME_MAX,
+  REVIEW_SUBMIT_MIN,
+} from "../../../lib/review-limits";
 import {
   listReviews,
   removeReview,
-  setReviewStatus,
+  updateReview,
   type ReviewStatus,
 } from "../../../lib/reviews-store";
 
 export const dynamic = "force-dynamic";
 
-function authorised(request: Request) {
-  const expected = process.env.REVIEW_ADMIN_TOKEN;
-  if (!expected) return "unconfigured" as const;
-  const given = request.headers.get("x-admin-token") ?? "";
-  const a = Buffer.from(given);
-  const b = Buffer.from(expected);
-  return a.length === b.length && timingSafeEqual(a, b)
-    ? ("ok" as const)
-    : ("denied" as const);
+function guard(request: NextRequest) {
+  return sessionValid(request.cookies.get(SESSION_COOKIE)?.value)
+    ? null
+    : NextResponse.json({ error: "Please sign in." }, { status: 401 });
 }
 
-function guard(request: Request) {
-  const state = authorised(request);
-  if (state === "unconfigured") {
-    return NextResponse.json(
-      { error: "REVIEW_ADMIN_TOKEN is not set on the server." },
-      { status: 503 },
-    );
-  }
-  if (state === "denied") {
-    return NextResponse.json({ error: "Wrong admin token." }, { status: 401 });
-  }
-  return null;
-}
-
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const blocked = guard(request);
   if (blocked) return blocked;
   try {
@@ -44,26 +30,63 @@ export async function GET(request: Request) {
   }
 }
 
-export async function PATCH(request: Request) {
+// Edit wording and/or change status. A review can only be approved when it
+// fits the carousel card, so the admin is made to trim long ones first.
+export async function PATCH(request: NextRequest) {
   const blocked = guard(request);
   if (blocked) return blocked;
-  const { id, status } = (await request.json()) as {
+  const body = (await request.json().catch(() => ({}))) as {
     id?: string;
+    name?: string;
+    message?: string;
+    rating?: number;
     status?: ReviewStatus;
   };
-  if (!id || !["pending", "approved", "rejected"].includes(String(status))) {
-    return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+  const existing = (await listReviews()).find((r) => r.id === body.id);
+  if (!existing) {
+    return NextResponse.json({ error: "Review not found." }, { status: 404 });
   }
-  const updated = await setReviewStatus(id, status as ReviewStatus);
-  return updated
-    ? NextResponse.json({ review: updated })
-    : NextResponse.json({ error: "Review not found." }, { status: 404 });
+
+  const name = (body.name ?? existing.name).trim();
+  const message = (body.message ?? existing.message).trim();
+  const rating = body.rating ?? existing.rating;
+  const status = body.status ?? existing.status;
+
+  if (!["pending", "approved", "rejected"].includes(status)) {
+    return NextResponse.json({ error: "Invalid status." }, { status: 400 });
+  }
+  if (!name || name.length > REVIEW_NAME_MAX) {
+    return NextResponse.json(
+      { error: `Name must be 1–${REVIEW_NAME_MAX} characters.` },
+      { status: 400 },
+    );
+  }
+  if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+    return NextResponse.json({ error: "Rating must be 1–5." }, { status: 400 });
+  }
+  if (message.length < REVIEW_SUBMIT_MIN) {
+    return NextResponse.json(
+      { error: `Review must be at least ${REVIEW_SUBMIT_MIN} characters.` },
+      { status: 400 },
+    );
+  }
+  if (status === "approved" && message.length > REVIEW_DISPLAY_MAX) {
+    return NextResponse.json(
+      {
+        error: `Trim the review to ${REVIEW_DISPLAY_MAX} characters or fewer before approving (it is ${message.length}).`,
+      },
+      { status: 400 },
+    );
+  }
+
+  const updated = await updateReview(existing.id, { name, message, rating, status });
+  return NextResponse.json({ review: updated });
 }
 
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
   const blocked = guard(request);
   if (blocked) return blocked;
-  const { id } = (await request.json()) as { id?: string };
+  const { id } = (await request.json().catch(() => ({}))) as { id?: string };
   if (!id || !(await removeReview(id))) {
     return NextResponse.json({ error: "Review not found." }, { status: 404 });
   }
