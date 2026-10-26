@@ -8,3 +8,5 @@ out
 
 tmp/
 *.tsbuildinfo
+.env*.local
+data/
