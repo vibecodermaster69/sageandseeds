@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Botanical from "./botanical";
 import Logo from "./logo";
 import Packaging, { type PackKind } from "./packaging";
 import { REVIEW_DISPLAY_MAX } from "./lib/review-limits";
@@ -15,6 +14,7 @@ const products = [
     copy: "Simple. Clean. Classic.",
     dot: "#d9788c",
     kind: "pink" as PackKind,
+    image: "/images/himalayan-pink-salt-card.png",
   },
   {
     name: "Classic Salt & Pepper",
@@ -233,16 +233,15 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section has-botanical" id="makhana">
-        <Botanical />
-        <div className="wrap split">
-          <header className="section-head">
+      <section className="section meet-makhana" id="makhana">
+        <div className="meet-makhana-grid">
+          <header className="meet-makhana-heading">
             <p className="eyebrow">What are Water Lily Pops?</p>
             <h2>
               Meet Makhana
               <span>Mindful snacking rooted in tradition.</span>
             </h2>
-            <figure className="photo photo-bowl">
+            <figure className="meet-makhana-photo">
               <img
                 src="/images/hero-scene.webp"
                 alt="A speckled ceramic bowl heaped with white puffed makhana on linen"
@@ -250,11 +249,11 @@ export default function Home() {
                 height="1024"
                 loading="lazy"
               />
-              <figcaption>The seed of the water lily</figcaption>
+              <figcaption>From water lily seed to everyday snack</figcaption>
             </figure>
           </header>
-          <div className="prose">
-            <p className="prose-lead">
+          <div className="meet-makhana-copy">
+            <p className="meet-makhana-lead">
               Makhana is the seed of the water lily — a traditional Indian food
               that has been enjoyed for generations.
             </p>
@@ -273,13 +272,15 @@ export default function Home() {
               ingredient to a new audience — bringing its tradition,
               versatility and satisfying crunch to modern snacking.
             </p>
+            <div className="meet-makhana-notes" aria-label="Makhana qualities">
+              <span>Rooted in eastern India</span>
+              <span>Simple, satisfying crunch</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="section band-parchment has-botanical">
-        <Botanical />
-        <Botanical />
+      <section className="section band-parchment has-parchment-botanical" id="labour">
         <div className="wrap split">
           <header className="section-head">
             <p className="eyebrow">The journey behind the crunch</p>
@@ -287,10 +288,10 @@ export default function Home() {
               More than a snack.
               <span>A labour of love.</span>
             </h2>
-            <figure className="photo photo-scoop">
+            <figure className="photo photo-bowl-scene">
               <img
-                src="/images/hero-scene.webp"
-                alt="A wooden scoop of freshly popped makhana on a stone counter"
+                src="/images/makhana-kadhai-craft.png"
+                alt="Artisan hands roasting makhana in a traditional iron kadhai"
                 width="1536"
                 height="1024"
                 loading="lazy"
@@ -321,18 +322,28 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <ol className="wrap steps" aria-label="How makhana is made">
-          {steps.map((step, i) => (
-            <li key={step}>
-              <StepArt name={step.toLowerCase() as StepName} />
-              <b>{String(i + 1).padStart(2, "0")}</b>
-              {step}
-            </li>
+
+        <div className="wrap labour-timeline" aria-label="How makhana is made">
+          <div className="timeline-lead-line" aria-hidden="true" />
+          {steps.map((step) => (
+            <div key={step} className="timeline-step">
+              <div className="step-text-col">
+                <div className="step-axis" aria-hidden="true">
+                  <span className="step-dot" />
+                  <span className="step-axis-line" />
+                </div>
+                <span className="step-label">{step}</span>
+              </div>
+              <div className="step-art-wrap">
+                <StepArt name={step.toLowerCase() as StepName} />
+              </div>
+              <div className="step-connector-line" aria-hidden="true" />
+            </div>
           ))}
-        </ol>
+        </div>
       </section>
 
-      <section className="section band-sand" id="story">
+      <section className="section band-sand has-story-botanical" id="story">
         <div className="wrap split">
           <header className="section-head">
             <p className="eyebrow">Our Story</p>
@@ -340,6 +351,17 @@ export default function Home() {
               Not a demographic.
               <span>A mindset.</span>
             </h2>
+            <figure className="story-leaves-feature">
+              <img
+                src="/images/story-mindful-kitchen.png"
+                alt="A mother preparing a nourishing makhana snack in a sunlit home kitchen"
+                className="story-photo"
+                width="1122"
+                height="1402"
+                loading="lazy"
+              />
+              <figcaption className="story-leaves-caption">Clean · Nourishing · Honest</figcaption>
+            </figure>
           </header>
           <div className="prose">
             <p className="prose-lead">
@@ -393,7 +415,7 @@ export default function Home() {
                   className="product-image"
                   aria-label={`View ${product.name}`}
                   style={{
-                    backgroundImage: `url(/images/${product.kind}-lifestyle.png)`,
+                    backgroundImage: `url(${product.image || `/images/${product.kind}-lifestyle.png`})`,
                   }}
                   onClick={(event) => {
                     const origin = event.currentTarget.getBoundingClientRect();
@@ -401,10 +423,19 @@ export default function Home() {
                     popMakhana(origin);
                   }}
                 >
-                  <Packaging
-                    kind={product.kind}
-                    label={`${product.name} lifestyle photograph`}
-                  />
+                  {product.image ? (
+                    <img
+                      src={product.image}
+                      alt={`${product.name} lifestyle photograph`}
+                      width="1122"
+                      height="1402"
+                    />
+                  ) : (
+                    <Packaging
+                      kind={product.kind}
+                      label={`${product.name} lifestyle photograph`}
+                    />
+                  )}
                 </button>
                 <div className="product-info">
                   <h3>
