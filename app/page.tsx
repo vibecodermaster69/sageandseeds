@@ -243,13 +243,12 @@ export default function Home() {
             </h2>
             <figure className="meet-makhana-photo">
               <img
-                src="/images/hero-scene.webp"
-                alt="A speckled ceramic bowl heaped with white puffed makhana on linen"
+                src="/images/meet-makhana.png"
+                alt="Raw water lily seed pods and puffed makhana beside a pond"
                 width="1536"
                 height="1024"
                 loading="lazy"
               />
-              <figcaption>From water lily seed to everyday snack</figcaption>
             </figure>
           </header>
           <div className="meet-makhana-copy">
@@ -272,10 +271,6 @@ export default function Home() {
               ingredient to a new audience — bringing its tradition,
               versatility and satisfying crunch to modern snacking.
             </p>
-            <div className="meet-makhana-notes" aria-label="Makhana qualities">
-              <span>Rooted in eastern India</span>
-              <span>Simple, satisfying crunch</span>
-            </div>
           </div>
         </div>
       </section>
@@ -472,11 +467,6 @@ export default function Home() {
             <p className="eyebrow">Delivery</p>
             <h2>We currently ship directly to you.</h2>
           </div>
-          <p className="delivery-copy">
-            From our family to your pantry, delivered with care.
-            <br />
-            Shipping costs are added at checkout.
-          </p>
         </div>
       </section>
 
@@ -498,7 +488,6 @@ export default function Home() {
             >
               Leave a review
             </button>
-            <p>Reviews are published after our team has read them.</p>
           </div>
         </div>
       </section>
