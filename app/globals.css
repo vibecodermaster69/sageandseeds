@@ -1183,6 +1183,28 @@ h2 {
   margin-left: auto;
   margin-right: auto;
 }
+.order-field {
+  display: grid;
+  gap: 7px;
+  margin: 14px auto 0;
+  max-width: 31rem;
+  text-align: left;
+  color: var(--ink);
+}
+.order-field select,
+.order-field input,
+.order-field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cdbba7;
+  border-radius: 8px;
+  background: var(--cream);
+  color: var(--ink);
+  font: inherit;
+}
+.order-field textarea {
+  resize: vertical;
+}
 .order-qr-wrap {
   width: min(260px, 100%);
   margin: 24px auto 16px;

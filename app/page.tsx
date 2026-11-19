@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import QRCode from "qrcode";
 import Logo from "./logo";
 import Packaging, { type PackKind } from "./packaging";
 import { REVIEW_DISPLAY_MAX } from "./lib/review-limits";
@@ -78,6 +79,10 @@ export default function Home() {
   const [panel, setPanel] = useState("search");
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<Product | null>(null);
+  const [orderProduct, setOrderProduct] = useState<Product | null>(null);
+  const [orderQuantity, setOrderQuantity] = useState(1);
+  const [orderAddress, setOrderAddress] = useState("");
+  const [orderQr, setOrderQr] = useState("");
   const [approved, setApproved] = useState<PublicReview[]>([]);
   const [reviewer, setReviewer] = useState("");
   const [reviewMessage, setReviewMessage] = useState("");
@@ -104,6 +109,35 @@ export default function Home() {
     setSelected(product);
     openPanel("product");
   }
+
+  function openOrder(product?: Product) {
+    setOrderProduct(product ?? null);
+    setOrderQuantity(1);
+    setOrderAddress("");
+    setOrderQr("");
+    openPanel("order");
+  }
+
+  const orderMessage = orderProduct
+    ? `Hi! I'd like to order:\n- ${orderProduct.name}: ${orderQuantity} pack${orderQuantity === 1 ? "" : "s"}\n\nDelivery Address:\n${orderAddress.trim()}\n\n(Free shipping on 8+ packs!)`
+    : "";
+  const orderLink = orderMessage
+    ? `https://wa.me/41788075315?text=${encodeURIComponent(orderMessage)}`
+    : "";
+
+  useEffect(() => {
+    if (panel !== "order" || !orderLink) {
+      setOrderQr("");
+      return;
+    }
+    QRCode.toDataURL(orderLink, {
+      width: 520,
+      margin: 2,
+      color: { dark: "#163955", light: "#ffffff" },
+    })
+      .then(setOrderQr)
+      .catch(() => setOrderQr(""));
+  }, [orderLink, panel]);
 
   async function submitReview(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -168,7 +202,7 @@ export default function Home() {
             <button
               className="icon-button"
               aria-label="Shopping bag"
-              onClick={() => openPanel("bag")}
+              onClick={() => openOrder()}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
@@ -442,7 +476,7 @@ export default function Home() {
                     <span className="price">30 g · CHF 3.49</span>
                     <button
                       className="button button-small"
-                      onClick={() => openPanel("order")}
+                      onClick={() => openOrder(product)}
                     >
                       Shop now
                     </button>
@@ -552,46 +586,63 @@ export default function Home() {
             </div>
           </>
         )}
-        {panel === "bag" && (
-          <div className="order-panel">
-            <p className="eyebrow">Order Sage &amp; Seeds</p>
-            <h2>Order through WhatsApp.</h2>
-            <p>
-              While we work on a better solution, scan this to place your order.
-            </p>
-            <div className="order-qr-wrap">
-              <img
-                src="/images/whatsapp-order-qr.png"
-                alt="QR code to place an order through WhatsApp"
-                width="1052"
-                height="1052"
-              />
-            </div>
-            <p className="order-help">
-              Open your phone camera and scan the code to send your order on
-              WhatsApp.
-            </p>
-          </div>
-        )}
         {panel === "order" && (
           <div className="order-panel">
             <p className="eyebrow">Order Sage &amp; Seeds</p>
-            <h2>Order through WhatsApp.</h2>
+            <h2>Place your order.</h2>
             <p>
-              While we work on a better solution, scan this to place your order.
+              While we work on a better solution, choose your flavour and
+              quantity below, then scan this to place your order.
             </p>
-            <div className="order-qr-wrap">
-              <img
-                src="/images/whatsapp-order-qr.png"
-                alt="QR code to place an order through WhatsApp"
-                width="1052"
-                height="1052"
+            <label className="order-field" htmlFor="order-product">
+              Flavour
+              <select
+                id="order-product"
+                value={orderProduct?.kind ?? ""}
+                onChange={(event) => {
+                  const product = products.find((item) => item.kind === event.target.value);
+                  setOrderProduct(product ?? null);
+                  setOrderQr("");
+                }}
+              >
+                <option value="" disabled>Select a flavour</option>
+                {products.map((product) => (
+                  <option key={product.kind} value={product.kind}>{product.name}</option>
+                ))}
+              </select>
+            </label>
+            <label className="order-field" htmlFor="order-quantity">
+              Quantity (packs)
+              <input
+                id="order-quantity"
+                type="number"
+                min="1"
+                max="99"
+                value={orderQuantity}
+                onChange={(event) => setOrderQuantity(Math.max(1, Math.min(99, Number(event.target.value) || 1)))}
               />
-            </div>
+            </label>
+            <label className="order-field" htmlFor="order-address">
+              Delivery address
+              <textarea
+                id="order-address"
+                rows={3}
+                placeholder="Street, postal code, city, country"
+                value={orderAddress}
+                onChange={(event) => setOrderAddress(event.target.value)}
+              />
+            </label>
+            {orderQr && (
+              <div className="order-qr-wrap">
+                <img src={orderQr} alt="QR code for this WhatsApp order" width="520" height="520" />
+              </div>
+            )}
             <p className="order-help">
-              Open your phone camera and scan the code to send your order on
-              WhatsApp.
+              {orderQr ? "Scan this code to open your exact order in WhatsApp." : "Enter your flavour, quantity and delivery address to create your order QR."}
             </p>
+            <a className="button" href={orderLink || undefined} target="_blank" rel="noreferrer" aria-disabled={!orderLink} onClick={(event) => { if (!orderLink) event.preventDefault(); }}>
+              Send order on WhatsApp
+            </a>
           </div>
         )}
         {panel === "review" && (
@@ -693,7 +744,7 @@ export default function Home() {
               <p className="availability">
                 Order through WhatsApp for now.
               </p>
-              <button className="button" onClick={() => openPanel("order")}>
+              <button className="button" onClick={() => openOrder(selected)}>
                 Shop now
               </button>
             </div>
