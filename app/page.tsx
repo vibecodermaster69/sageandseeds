@@ -39,6 +39,7 @@ const products = [
 ];
 
 type Product = (typeof products)[number];
+type Cart = Record<string, number>;
 
 // The one genuine review supplied by the client; reviews approved in the admin
 // page are added after it in the carousel.
@@ -79,8 +80,7 @@ export default function Home() {
   const [panel, setPanel] = useState("search");
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<Product | null>(null);
-  const [orderProduct, setOrderProduct] = useState<Product | null>(null);
-  const [orderQuantity, setOrderQuantity] = useState(1);
+  const [cart, setCart] = useState<Cart>({});
   const [orderAddress, setOrderAddress] = useState("");
   const [orderQr, setOrderQr] = useState("");
   const [approved, setApproved] = useState<PublicReview[]>([]);
@@ -110,23 +110,40 @@ export default function Home() {
     openPanel("product");
   }
 
-  function openOrder(product?: Product) {
-    setOrderProduct(product ?? null);
-    setOrderQuantity(1);
-    setOrderAddress("");
-    setOrderQr("");
-    openPanel("order");
+  function addToCart(product: Product) {
+    setCart((current) => ({
+      ...current,
+      [product.kind]: (current[product.kind] ?? 0) + 1,
+    }));
   }
 
-  const orderMessage = orderProduct
-    ? `Hi! I'd like to order:\n- ${orderProduct.name}: ${orderQuantity} pack${orderQuantity === 1 ? "" : "s"}\n\nDelivery Address:\n${orderAddress.trim()}\n\n(Free shipping on 8+ packs!)`
+  function updateCart(product: Product, quantity: number) {
+    setCart((current) => {
+      const next = { ...current };
+      if (quantity <= 0) delete next[product.kind];
+      else next[product.kind] = quantity;
+      return next;
+    });
+  }
+
+  function openCheckout() {
+    setOrderQr("");
+    openPanel("bag");
+  }
+
+  const cartItems = products.filter((product) => (cart[product.kind] ?? 0) > 0);
+  const cartCount = cartItems.reduce((total, product) => total + (cart[product.kind] ?? 0), 0);
+  const orderMessage = cartItems.length
+    ? `Hi! I'd like to order:\n${cartItems
+        .map((product) => `- ${product.name}: ${cart[product.kind]} pack${cart[product.kind] === 1 ? "" : "s"}`)
+        .join("\n")}\n\nTotal packs: ${cartCount}\n\nDelivery Address:\n${orderAddress.trim()}\n\n(Free shipping on 8+ packs!)`
     : "";
   const orderLink = orderMessage
     ? `https://wa.me/41788075315?text=${encodeURIComponent(orderMessage)}`
     : "";
 
   useEffect(() => {
-    if (panel !== "order" || !orderLink) {
+    if (panel !== "bag" || !orderLink) {
       setOrderQr("");
       return;
     }
@@ -202,13 +219,14 @@ export default function Home() {
             <button
               className="icon-button"
               aria-label="Shopping bag"
-              onClick={() => openOrder()}
+              onClick={openCheckout}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                 <line x1="3" y1="6" x2="21" y2="6" />
                 <path d="M16 10a4 4 0 0 1-8 0" />
               </svg>
+              {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
             </button>
           </div>
         </div>
@@ -476,9 +494,9 @@ export default function Home() {
                     <span className="price">30 g · CHF 3.49</span>
                     <button
                       className="button button-small"
-                      onClick={() => openOrder(product)}
+                      onClick={() => addToCart(product)}
                     >
-                      Shop now
+                      Add to cart
                     </button>
                   </div>
                 </div>
@@ -586,63 +604,62 @@ export default function Home() {
             </div>
           </>
         )}
-        {panel === "order" && (
+        {panel === "bag" && (
           <div className="order-panel">
-            <p className="eyebrow">Order Sage &amp; Seeds</p>
-            <h2>Place your order.</h2>
-            <p>
-              While we work on a better solution, choose your flavour and
-              quantity below, then scan this to place your order.
-            </p>
-            <label className="order-field" htmlFor="order-product">
-              Flavour
-              <select
-                id="order-product"
-                value={orderProduct?.kind ?? ""}
-                onChange={(event) => {
-                  const product = products.find((item) => item.kind === event.target.value);
-                  setOrderProduct(product ?? null);
-                  setOrderQr("");
-                }}
-              >
-                <option value="" disabled>Select a flavour</option>
-                {products.map((product) => (
-                  <option key={product.kind} value={product.kind}>{product.name}</option>
-                ))}
-              </select>
-            </label>
-            <label className="order-field" htmlFor="order-quantity">
-              Quantity (packs)
-              <input
-                id="order-quantity"
-                type="number"
-                min="1"
-                max="99"
-                value={orderQuantity}
-                onChange={(event) => setOrderQuantity(Math.max(1, Math.min(99, Number(event.target.value) || 1)))}
-              />
-            </label>
-            <label className="order-field" htmlFor="order-address">
-              Delivery address
-              <textarea
-                id="order-address"
-                rows={3}
-                placeholder="Street, postal code, city, country"
-                value={orderAddress}
-                onChange={(event) => setOrderAddress(event.target.value)}
-              />
-            </label>
-            {orderQr && (
-              <div className="order-qr-wrap">
-                <img src={orderQr} alt="QR code for this WhatsApp order" width="520" height="520" />
-              </div>
+            <p className="eyebrow">Your shopping bag</p>
+            <h2>Build your order.</h2>
+            {cartItems.length === 0 ? (
+              <>
+                <p>Your bag is empty. Add the flavours you would like to order.</p>
+                <a className="button" href="#shop" onClick={() => dialog.current?.close()}>
+                  Explore the flavours
+                </a>
+              </>
+            ) : (
+              <>
+                <div className="cart-lines">
+                  {cartItems.map((product) => (
+                    <div className="cart-line" key={product.kind}>
+                      <div>
+                        <strong>{product.name}</strong>
+                        <span>CHF 3.49 per pack</span>
+                      </div>
+                      <label>
+                        <span className="sr-only">Quantity for {product.name}</span>
+                        <input
+                          type="number"
+                          min="0"
+                          max="99"
+                          value={cart[product.kind]}
+                          onChange={(event) => updateCart(product, Number(event.target.value) || 0)}
+                        />
+                      </label>
+                    </div>
+                  ))}
+                </div>
+                <label className="order-field" htmlFor="order-address">
+                  Delivery address
+                  <textarea
+                    id="order-address"
+                    rows={3}
+                    placeholder="Street, postal code, city, country"
+                    value={orderAddress}
+                    onChange={(event) => setOrderAddress(event.target.value)}
+                  />
+                </label>
+                {orderQr && (
+                  <div className="order-qr-wrap">
+                    <img src={orderQr} alt="QR code for this WhatsApp order" width="520" height="520" />
+                  </div>
+                )}
+                <p className="order-help">
+                  {orderQr ? "Scan this code to open your complete order in WhatsApp." : "Add your delivery address to create a QR code containing every product and quantity."}
+                </p>
+                <a className="button" href={orderLink || undefined} target="_blank" rel="noreferrer" aria-disabled={!orderAddress.trim()} onClick={(event) => { if (!orderAddress.trim()) event.preventDefault(); }}>
+                  Send order on WhatsApp
+                </a>
+              </>
             )}
-            <p className="order-help">
-              {orderQr ? "Scan this code to open your exact order in WhatsApp." : "Enter your flavour, quantity and delivery address to create your order QR."}
-            </p>
-            <a className="button" href={orderLink || undefined} target="_blank" rel="noreferrer" aria-disabled={!orderLink} onClick={(event) => { if (!orderLink) event.preventDefault(); }}>
-              Send order on WhatsApp
-            </a>
           </div>
         )}
         {panel === "review" && (
@@ -744,8 +761,8 @@ export default function Home() {
               <p className="availability">
                 Order through WhatsApp for now.
               </p>
-              <button className="button" onClick={() => openOrder(selected)}>
-                Shop now
+              <button className="button" onClick={() => { if (selected) addToCart(selected); dialog.current?.close(); }}>
+                Add to cart
               </button>
             </div>
           </div>

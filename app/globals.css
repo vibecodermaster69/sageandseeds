@@ -136,6 +136,7 @@ blockquote {
   gap: 6px;
 }
 .icon-button {
+  position: relative;
   display: grid;
   place-items: center;
   width: 42px;
@@ -1152,6 +1153,65 @@ h2 {
 .info-dialog .button {
   font-size: 0.72rem;
   padding: 13px 24px;
+}
+.cart-count {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--rust);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.cart-lines {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0 18px;
+}
+.cart-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+.cart-line strong,
+.cart-line span {
+  display: block;
+}
+.cart-line strong {
+  font-size: 0.9rem;
+}
+.cart-line span {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.cart-line input {
+  width: 72px;
+  margin: 0;
+  padding: 9px 10px;
+  text-align: center;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 .product-detail {
   display: grid;
