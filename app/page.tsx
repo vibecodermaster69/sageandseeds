@@ -442,7 +442,7 @@ export default function Home() {
                     <span className="price">30 g · CHF 3.49</span>
                     <button
                       className="button button-small"
-                      onClick={() => openProduct(product)}
+                      onClick={() => openPanel("order")}
                     >
                       Shop now
                     </button>
@@ -553,18 +553,46 @@ export default function Home() {
           </>
         )}
         {panel === "bag" && (
-          <>
-            <p className="eyebrow">Your shopping bag</p>
-            <h2>A little goodness awaits.</h2>
-            <p>Your bag is empty. Online ordering is not available yet.</p>
-            <a
-              className="button"
-              href="#shop"
-              onClick={() => dialog.current?.close()}
-            >
-              Explore the flavours
-            </a>
-          </>
+          <div className="order-panel">
+            <p className="eyebrow">Order Sage &amp; Seeds</p>
+            <h2>Order through WhatsApp.</h2>
+            <p>
+              While we work on a better solution, scan this to place your order.
+            </p>
+            <div className="order-qr-wrap">
+              <img
+                src="/images/whatsapp-order-qr.png"
+                alt="QR code to place an order through WhatsApp"
+                width="1052"
+                height="1052"
+              />
+            </div>
+            <p className="order-help">
+              Open your phone camera and scan the code to send your order on
+              WhatsApp.
+            </p>
+          </div>
+        )}
+        {panel === "order" && (
+          <div className="order-panel">
+            <p className="eyebrow">Order Sage &amp; Seeds</p>
+            <h2>Order through WhatsApp.</h2>
+            <p>
+              While we work on a better solution, scan this to place your order.
+            </p>
+            <div className="order-qr-wrap">
+              <img
+                src="/images/whatsapp-order-qr.png"
+                alt="QR code to place an order through WhatsApp"
+                width="1052"
+                height="1052"
+              />
+            </div>
+            <p className="order-help">
+              Open your phone camera and scan the code to send your order on
+              WhatsApp.
+            </p>
+          </div>
         )}
         {panel === "review" && (
           <>
@@ -663,8 +691,11 @@ export default function Home() {
               {selected.note && <p>{selected.note}</p>}
               <p>30 g &middot; CHF 3.49</p>
               <p className="availability">
-                Online ordering is not available yet.
+                Order through WhatsApp for now.
               </p>
+              <button className="button" onClick={() => openPanel("order")}>
+                Shop now
+              </button>
             </div>
           </div>
         )}
